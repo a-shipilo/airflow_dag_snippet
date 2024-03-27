@@ -1,0 +1,32 @@
+{
+	"create dag":{
+		"scope":"python",
+		"prefix":"create_dag",
+		"body":[
+			"import pendulum",
+			"from utils.helpers import telegram_notify",
+			"",
+			"from airflow.decorators import task, dag",
+			"",
+			"",
+			"@dag(",
+			"	'${TM_FILENAME_BASE}',",
+			"	schedule_interval = None,",
+			"	tags = [$2],",
+			"	start_date = pendulum.datetime($3),",
+			"	catchup = False,",
+			"	template_searchpath = '/opt/airflow/dags/templates/${TM_FILENAME_BASE}',",
+			"	default_args = {",
+			"		'owner':'a_shipilo',",
+			"		'retries':2,",
+			"		'retry_delay':pendulum.duration(minutes=1),",
+			"		'on_failure_callback':telegram_notify",
+			"	}",
+			")",
+			"def ${TM_FILENAME_BASE}():",
+			"	pass",
+			"",
+			"mydag = ${TM_FILENAME_BASE}()"
+		]
+	}
+}
